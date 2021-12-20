@@ -2,7 +2,7 @@
   <div class="container section">
     <div class="row">
       <div class="col s12 m6 offset-m3">
-        <div class="card">
+        <div class="card indigo lighten-5">
           <div class="card-action indigo lighten-2 white-text center">
             <h3>Login</h3>
           </div>
@@ -88,7 +88,8 @@
 <style scoped>
   .card-action,
   .card {
-    border-radius: 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
   }
   .card {
     margin-top: 50px;
