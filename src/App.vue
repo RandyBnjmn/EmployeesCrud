@@ -1,30 +1,51 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view/>
+  <nav class="nav-wrapper indigo lighten-2">
+    <div class="container">
+      <router-link to="/employees" class="brand-logo">Crud</router-link>
+      <a v-if="token" href="#" data-target="menu" class="sidenav-trigger">
+        <i class="material-icons">menu</i>
+      </a>
+      <ul class="right hide-on-med-and-down">
+        <li>
+          <router-link v-if="token" to="/paysheet">Paysheet</router-link>
+        </li>
+        <li v-if="token">
+          <a v-on:click="this.actionSingOff">Cerrar sesión</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <ul class="sidenav" id="menu">
+    <li><router-link to="/paysheet"></router-link></li>
+    <li>
+      <a href="#" v-on:click="this.actionSingOff" to="/">Cerrar sesión</a>
+    </li>
+  </ul>
+
+  <router-view />
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+  import { mapActions, mapState } from 'vuex';
+  export default {
+    computed: {
+      ...mapState(['token']),
+    },
+    methods: {
+      ...mapActions(['actionSingOff', 'getToken']),
+    },
+    mounted() {
+      M.AutoInit();
+      this.getToken();
+    },
+  };
+</script>
 
-#nav {
-  padding: 30px;
-}
+<style scoped>
+  @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+  .sidenav {
+    width: 150px;
+  }
 </style>

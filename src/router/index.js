@@ -1,25 +1,44 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import store from '../store';
+import Login from '../views/Login.vue';
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'Login',
+    component: Login,
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
+    path: '/employees',
+    name: 'Employees',
+    component: () => import('../views/Employees.vue'),
+    meta: { rutaProtegida: true },
+  },
+  {
+    path: '/paysheet',
+    name: 'Paysheet',
+    component: () => import('../views/Paysheet.vue'),
+    meta: { rutaProtegida: true },
+  },
+  {
+    path: '/employeesDetails/:id?',
+    name: 'EmployeesDetails',
+    component: () => import('../views/EmployeesDetails.vue'),
+    meta: { rutaProtegida: true },
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+  const rutaEsProtegida = to.matched.some((item) => item.meta.rutaProtegida);
+  if (rutaEsProtegida && store.state.token === null) {
+    next('/');
+  } else {
+    next();
+  }
+});
+export default router;
